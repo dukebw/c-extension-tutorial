@@ -34,15 +34,16 @@
         brew install openssl xz
 
         PYTHON_EXE=python.exe
-        CPPFLAGS="-I/opt/X11/include -I$(brew --prefix openssl)/include $CPPFLAGS" \
-                LDFLAGS="-L/opt/X11/lib -L$(brew --prefix openssl)/lib $LDFLAGS" \
-                ./configure --with-pydebug
+        CPPFLAGS="-I$(brew --prefix)/include -I$(brew --prefix openssl)/include $CPPFLAGS" \
+                LDFLAGS="-L$(brew --prefix)/lib -L$(brew --prefix openssl)/lib $LDFLAGS" \
+                ./configure --with-pydebug --prefix $PWD/../../venv
     else
         echo "Only GNU+Linux and OSX are supported"
         exit 1
     fi
 
-    make -j4
+    bear -- make -j10
+    make install
     popd
 
     # create a new virtualenv with our debug python build
